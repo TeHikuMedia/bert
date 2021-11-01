@@ -7,7 +7,7 @@ cp -r /sentencepiece-input/corpus ../
 
 # Put sentencepiece model in the right place
 mkdir ${SENTENCEPIECE_DIR}/models
-cp -r /sentencepiece-input/full_corpus.sentences
+cp -r /sentencepiece-input/sample_corpus.sentences
 cp -r /sentencepiece-input/models ${SENTENCEPIECE_DIR}
 
 # Do the work
