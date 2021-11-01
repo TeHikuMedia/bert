@@ -130,6 +130,13 @@ def load_vocab(vocab_file):
       token = token.strip()
       vocab[token] = index
       index += 1
+
+  # Add extra tags if they are missing
+  extra_tags = ['[CLS]', '[UNK]', '[MASK]', '[SEP]']
+  for tag in extra_tags:
+      if not tag in vocab.keys():
+        vocab.update({tag: max(vocab.values()) + 1})
+
   return vocab
 
 
@@ -137,7 +144,7 @@ def convert_by_vocab(vocab, items):
   """Converts a sequence of [tokens|ids] using the vocab."""
   output = []
   for item in items:
-    output.append(vocab[item])
+      output.append(vocab[item])
   return output
 
 
