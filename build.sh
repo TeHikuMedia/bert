@@ -11,7 +11,7 @@ cp -r /input/sentencepiece/full_corpus.sentences
 cp -r /input/sentencepiece/models ${SENTENCEPIECE_DIR}
 
 # Do the work
-make pretraining_data
+make sample_data
 
 # Save the results
 cp tf_examples.tfrecord
