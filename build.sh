@@ -3,12 +3,12 @@ set -ex
 export SENTENCEPIECE_DIR=../sentencepiece
 
 # Copy text corpus from sentencepiece job
-cp -r /sentencepiece-input/corpus ../
+cp -r /input/sentencepiece/corpus ../
 
 # Put sentencepiece model in the right place
 mkdir ${SENTENCEPIECE_DIR}/models
-cp -r /sentencepiece-input/full_corpus.sentences
-cp -r /sentencepiece-input/models ${SENTENCEPIECE_DIR}
+cp -r /input/sentencepiece/full_corpus.sentences
+cp -r /input/sentencepiece/models ${SENTENCEPIECE_DIR}
 
 # Do the work
 make pretraining_data
