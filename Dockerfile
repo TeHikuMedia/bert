@@ -23,7 +23,7 @@ ENV HOME /home/kaimahi
 
 # Install apt packages
 RUN apt update
-RUN apt install -y gcc libffi-dev
+RUN apt install -y gcc libffi-dev git
 
 # Install python + other things
 RUN apt update
