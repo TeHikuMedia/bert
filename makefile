@@ -18,11 +18,11 @@ $(SENTENCEPIECE_DIR)/models/full_corpus_vocab.txt: $(SENTENCEPIECE_DIR)/models/f
 $(SENTENCEPIECE_DIR)/models/sample_corpus_vocab.txt: $(SENTENCEPIECE_DIR)/models/sample_corpus.vocab
 	cat $< | awk -F ' ' '{print $$1}' > $@
 
-pretraining_data: create_pretraining_data.py $(SENTENCEPIECE_DIR)/sample_corpus.sentences $(SENTENCEPIECE_DIR)/models/sample_corpus_vocab.txt
+pretraining_data: create_pretraining_data.py $(SENTENCEPIECE_DIR)/full_corpus.sentences $(SENTENCEPIECE_DIR)/models/full_corpus_vocab.txt
 	$(RUN) python3 create_pretraining_data.py \
-  --input_file=$(SENTENCEPIECE_DIR)/sample_corpus.sentences \
+  --input_file=$(SENTENCEPIECE_DIR)/full_corpus.sentences \
   --output_file=tf_examples.tfrecord \
-  --vocab_file=$(SENTENCEPIECE_DIR)/models/sample_corpus_vocab.txt \
+  --vocab_file=$(SENTENCEPIECE_DIR)/models/full_corpus_vocab.txt \
   --do_lower_case=True \
   --max_seq_length=128 \
   --max_predictions_per_seq=20 \
