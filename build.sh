@@ -14,4 +14,4 @@ cp -r /input/sentencepiece/models ${SENTENCEPIECE_DIR}
 make full_data
 
 # Save the results
-cp tf_examples.tfrecord /output
+cp full_pretraining_data.tfrecord /output
