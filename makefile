@@ -18,10 +18,10 @@ $(SENTENCEPIECE_DIR)/models/full_corpus_vocab.txt: $(SENTENCEPIECE_DIR)/models/f
 $(SENTENCEPIECE_DIR)/models/sample_corpus_vocab.txt: $(SENTENCEPIECE_DIR)/models/sample_corpus.vocab
 	cat $< | awk -F ' ' '{print $$1}' > $@
 
-sample_data: create_pretraining_data.py $(SENTENCEPIECE_DIR)/sample_corpus.sentences $(SENTENCEPIECE_DIR)/models/sample_corpus_vocab.txt
+sample_pretraining_data.tfrecord: create_pretraining_data.py $(SENTENCEPIECE_DIR)/sample_corpus.sentences $(SENTENCEPIECE_DIR)/models/sample_corpus_vocab.txt
 	$(RUN) python3 create_pretraining_data.py \
   --input_file=$(SENTENCEPIECE_DIR)/sample_corpus.sentences \
-  --output_file=sample_pretraining_data.tfrecord \
+  --output_file=$@ \
   --vocab_file=$(SENTENCEPIECE_DIR)/models/sample_corpus_vocab.txt \
   --do_lower_case=True \
   --max_seq_length=128 \
@@ -30,10 +30,10 @@ sample_data: create_pretraining_data.py $(SENTENCEPIECE_DIR)/sample_corpus.sente
   --random_seed=12345 \
   --dupe_factor=5
 
-full_data: create_pretraining_data.py $(SENTENCEPIECE_DIR)/full_corpus.sentences $(SENTENCEPIECE_DIR)/models/full_corpus_vocab.txt
+full_pretraining_data.tfrecord: create_pretraining_data.py $(SENTENCEPIECE_DIR)/full_corpus.sentences $(SENTENCEPIECE_DIR)/models/full_corpus_vocab.txt
 	$(RUN) python3 create_pretraining_data.py \
   --input_file=$(SENTENCEPIECE_DIR)/full_corpus.sentences \
-  --output_file=full_pretraining_data.tfrecord \
+  --output_file=$@ \
   --vocab_file=$(SENTENCEPIECE_DIR)/models/full_corpus_vocab.txt \
   --do_lower_case=True \
   --max_seq_length=128 \
