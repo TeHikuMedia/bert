@@ -17,7 +17,7 @@ SENTENCEPIECE_MODEL_DIR ?= $(SENTENCEPIECE_DIR)/models/$(SENTENCEPIECE_MODEL_NAM
 
 .PHONY: docker docker-push docker-pull enter enter-root
 
-pretraining: $(BERT_MODEL_DIR)/bert_model.ckpt
+pretraining: $(BERT_MODEL_DIR)/$(BERT_MODEL_NAME).ckpt
 
 $(BERT_MODEL_DIR)/$(BERT_MODEL_NAME).ckpt: full_pretraining_data.tfrecord
 	$(RUN) python3 run_pretraining.py \
