@@ -19,7 +19,7 @@ SENTENCEPIECE_MODEL_DIR ?= $(SENTENCEPIECE_DIR)/models/$(SENTENCEPIECE_MODEL_NAM
 
 pretraining: $(BERT_MODEL_DIR)/$(BERT_MODEL_NAME).ckpt
 
-$(BERT_MODEL_DIR)/$(BERT_MODEL_NAME).ckpt: full_pretraining_data.tfrecord
+$(BERT_MODEL_DIR)/$(BERT_MODEL_NAME).ckpt: $(SENTENCEPIECE_MODEL_NAME).tfrecord
 	$(RUN) python3 run_pretraining.py \
   --input_file=$< \
   --output_dir=pretraining_output \
