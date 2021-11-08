@@ -8,19 +8,24 @@ UID ?= kaimahi
 GID ?= kaimahi
 DOCKER_ARGS ?=
 
+BERT_MODEL_NAME ?= base_bert
+BERT_MODEL_DIR ?= models/$(BERT_MODEL_NAME)
+
 SENTENCEPIECE_DIR ?= ../sentencepiece
+SENTENCEPIECE_MODEL_NAME ?= sample
+SENTENCEPIECE_MODEL_DIR ?= $(SENTENCEPIECE_DIR)/models/$(SENTENCEPIECE_MODEL_NAME)
 
 .PHONY: docker docker-push docker-pull enter enter-root
 
-pretraining: models/bert_model.ckpt
+pretraining: $(BERT_MODEL_DIR)/bert_model.ckpt
 
-models/base_bert/bert_model.ckpt: full_pretraining_data.tfrecord
+$(BERT_MODEL_DIR)/$(BERT_MODEL_NAME).ckpt: full_pretraining_data.tfrecord
 	$(RUN) python3 run_pretraining.py \
   --input_file=$< \
   --output_dir=pretraining_output \
   --do_train=True \
   --do_eval=True \
-  --bert_config_file=models/bert_config.json \
+  --bert_config_file=$(BERT_MODEL_DIR)/bert_config.json \
   --train_batch_size=32 \
   --max_seq_length=128 \
   --max_predictions_per_seq=20 \
@@ -29,29 +34,18 @@ models/base_bert/bert_model.ckpt: full_pretraining_data.tfrecord
   --learning_rate=2e-5 \
   --use_tpu=False
 
-$(SENTENCEPIECE_DIR)/models/full_corpus_vocab.txt: $(SENTENCEPIECE_DIR)/models/full_corpus.vocab
+$(SENTENCEPIECE_MODEL_DIR)/$(SENTENCEPIECE_MODEL_NAME)_vocab.txt: \
+	$(SENTENCEPIECE_MODEL_DIR)/$(SENTENCEPIECE_MODEL_NAME).vocab
 	cat $< | awk -F ' ' '{print $$1}' > $@
 
-$(SENTENCEPIECE_DIR)/models/sample_corpus_vocab.txt: $(SENTENCEPIECE_DIR)/models/sample_corpus.vocab
-	cat $< | awk -F ' ' '{print $$1}' > $@
-
-sample_pretraining_data.tfrecord: create_pretraining_data.py $(SENTENCEPIECE_DIR)/sample_corpus.sentences $(SENTENCEPIECE_DIR)/models/sample_corpus_vocab.txt
+$(SENTENCEPIECE_MODEL_NAME).tfrecord: \
+	create_pretraining_data.py \
+	$(SENTENCEPIECE_MODEL_DIR)/$(SENTENCEPIECE_MODEL_NAME).sentences \
+	$(SENTENCEPIECE_MODEL_DIR)/$(SENTENCEPIECE_MODEL_NAME)_vocab.txt
 	$(RUN) python3 create_pretraining_data.py \
-  --input_file=$(SENTENCEPIECE_DIR)/sample_corpus.sentences \
+  --input_file=$(SENTENCEPIECE_MODEL_DIR)/$(SENTENCEPIECE_MODEL_NAME).sentences \
   --output_file=$@ \
-  --vocab_file=$(SENTENCEPIECE_DIR)/models/sample_corpus_vocab.txt \
-  --do_lower_case=True \
-  --max_seq_length=128 \
-  --max_predictions_per_seq=20 \
-  --masked_lm_prob=0.15 \
-  --random_seed=12345 \
-  --dupe_factor=5
-
-full_pretraining_data.tfrecord: create_pretraining_data.py $(SENTENCEPIECE_DIR)/full_corpus.sentences $(SENTENCEPIECE_DIR)/models/full_corpus_vocab.txt
-	$(RUN) python3 create_pretraining_data.py \
-  --input_file=$(SENTENCEPIECE_DIR)/full_corpus.sentences \
-  --output_file=$@ \
-  --vocab_file=$(SENTENCEPIECE_DIR)/models/full_corpus_vocab.txt \
+  --vocab_file=$(SENTENCEPIECE_MODEL_DIR)/$(SENTENCEPIECE_MODEL_NAME)_vocab.txt \
   --do_lower_case=True \
   --max_seq_length=128 \
   --max_predictions_per_seq=20 \
