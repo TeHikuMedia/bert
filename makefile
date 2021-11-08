@@ -12,6 +12,23 @@ SENTENCEPIECE_DIR ?= ../sentencepiece
 
 .PHONY: docker docker-push docker-pull enter enter-root
 
+pretraining: models/bert_model.ckpt
+
+models/base_bert/bert_model.ckpt: full_pretraining_data.tfrecord
+	$(RUN) python3 run_pretraining.py \
+  --input_file=$< \
+  --output_dir=pretraining_output \
+  --do_train=True \
+  --do_eval=True \
+  --bert_config_file=models/bert_config.json \
+  --train_batch_size=32 \
+  --max_seq_length=128 \
+  --max_predictions_per_seq=20 \
+  --num_train_steps=20 \
+  --num_warmup_steps=10 \
+  --learning_rate=2e-5 \
+  --use_tpu=False
+
 $(SENTENCEPIECE_DIR)/models/full_corpus_vocab.txt: $(SENTENCEPIECE_DIR)/models/full_corpus.vocab
 	cat $< | awk -F ' ' '{print $$1}' > $@
 
