@@ -10,7 +10,7 @@ mkdir ${SENTENCEPIECE_DIR}/models
 cp -r /input/sentencepiece/models ${SENTENCEPIECE_DIR}
 
 # Show the cuda version
-nvcc --version
+# nvcc --version
 
 # Do the work
 make pretraining
