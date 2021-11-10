@@ -114,5 +114,5 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-/full_pretraining_data.tfrecord
+*.tfrecord
 /pretraining_output/
