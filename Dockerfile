@@ -32,3 +32,6 @@ RUN pip3 install --upgrade "pip < 21.0"
 
 COPY requirements.txt /root/requirements.txt
 RUN pip3 install -r /root/requirements.txt
+
+RUN pip3 install nvidia-pyindex
+RUN pip3 install nvidia-tensorflow[horovod]
