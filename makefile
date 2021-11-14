@@ -15,6 +15,8 @@ SENTENCEPIECE_DIR ?= ../sentencepiece
 SENTENCEPIECE_MODEL_NAME ?= sample
 SENTENCEPIECE_MODEL_DIR ?= $(SENTENCEPIECE_DIR)/models/$(SENTENCEPIECE_MODEL_NAME)
 
+NUM_TRAIN_STEPS ?= 10
+
 .PHONY: docker docker-push docker-pull enter enter-root
 
 pretraining: $(BERT_MODEL_DIR)/$(BERT_MODEL_NAME).ckpt
@@ -29,7 +31,7 @@ $(BERT_MODEL_DIR)/$(BERT_MODEL_NAME).ckpt: $(SENTENCEPIECE_MODEL_NAME).tfrecord
   --train_batch_size=32 \
   --max_seq_length=128 \
   --max_predictions_per_seq=20 \
-  --num_train_steps=20 \
+  --num_train_steps=$(NUM_TRAIN_STEPS) \
   --num_warmup_steps=10 \
   --learning_rate=2e-5 \
   --use_tpu=False
