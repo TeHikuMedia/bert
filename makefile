@@ -24,7 +24,7 @@ pretraining: $(BERT_MODEL_DIR)/$(BERT_MODEL_NAME).ckpt
 $(BERT_MODEL_DIR)/$(BERT_MODEL_NAME).ckpt: $(SENTENCEPIECE_MODEL_NAME).tfrecord
 	$(RUN) python3 run_pretraining.py \
   --input_file=$< \
-  --output_dir=$(BERT_MODEL_DIR)/pretraining_output \
+  --output_dir=$(BERT_MODEL_DIR) \
   --do_train=True \
   --do_eval=True \
   --bert_config_file=$(BERT_MODEL_DIR)/bert_config.json \
@@ -54,6 +54,10 @@ $(SENTENCEPIECE_MODEL_NAME).tfrecord: \
   --masked_lm_prob=0.15 \
   --random_seed=12345 \
   --dupe_factor=5
+
+clean:
+	rm -rf models
+	git checkout models
 
 JUPYTER_PASSWORD ?= jupyter
 JUPYTER_PORT ?= 8888
