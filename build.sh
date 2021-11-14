@@ -12,5 +12,3 @@ make pretraining
 
 # Save the results
 cp *.tfrecord /output
-cp -r models/ /output
-cp -r pretraining_output/ /output

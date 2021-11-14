@@ -24,7 +24,7 @@ pretraining: $(BERT_MODEL_DIR)/$(BERT_MODEL_NAME).ckpt
 $(BERT_MODEL_DIR)/$(BERT_MODEL_NAME).ckpt: $(SENTENCEPIECE_MODEL_NAME).tfrecord
 	$(RUN) python3 run_pretraining.py \
   --input_file=$< \
-  --output_dir=pretraining_output \
+  --output_dir=$(BERT_MODEL_DIR)/pretraining_output \
   --do_train=True \
   --do_eval=True \
   --bert_config_file=$(BERT_MODEL_DIR)/bert_config.json \
