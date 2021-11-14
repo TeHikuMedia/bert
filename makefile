@@ -10,6 +10,7 @@ DOCKER_ARGS ?=
 
 BERT_MODEL_NAME ?= base_bert
 BERT_MODEL_DIR ?= models/$(BERT_MODEL_NAME)
+BERT_CONFIG_JSON ?= models/$(BERT_MODEL_NAME)/bert_config.json
 
 SENTENCEPIECE_DIR ?= ../sentencepiece
 SENTENCEPIECE_MODEL_NAME ?= sample
@@ -27,7 +28,7 @@ $(BERT_MODEL_DIR)/$(BERT_MODEL_NAME).ckpt: $(SENTENCEPIECE_MODEL_NAME).tfrecord
   --output_dir=$(BERT_MODEL_DIR) \
   --do_train=True \
   --do_eval=True \
-  --bert_config_file=$(BERT_MODEL_DIR)/bert_config.json \
+  --bert_config_file=$(BERT_CONFIG_JSON) \
   --train_batch_size=32 \
   --max_seq_length=128 \
   --max_predictions_per_seq=20 \
